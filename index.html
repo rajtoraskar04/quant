@@ -1,0 +1,943 @@
+<title>Quant Guide Daily</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: one reading column like a problem sheet; sticky masthead with tabs; cards only for problems. */
+:root {
+  --paper: #F1F2EE;
+  --sheet: #FFFFFF;
+  --ink: #15181C;
+  --ink-2: #4A525B;
+  --ink-3: #78818A;
+  --rule: #D8DBD4;
+  --rule-2: #E7E9E4;
+  --accent: #2646A6;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E4E9F7;
+  --easy: #2A7452;
+  --easy-soft: #E1EFE7;
+  --med: #98600F;
+  --med-soft: #F5EBD7;
+  --hard: #AD3636;
+  --hard-soft: #F5E0DE;
+  --img-bg: #FFFFFF;
+  --img-filter: none;
+  --shadow: 0 1px 2px rgba(21, 24, 28, .06), 0 0 0 1px rgba(21, 24, 28, .05);
+  --f-text: "STIX Two Text", Cambria, Georgia, "Times New Roman", serif;
+  --f-ui: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #101214; --sheet: #1B1C1D; --ink: #E6E8EA; --ink-2: #A8AFB6; --ink-3: #79818A;
+    --rule: #2D3135; --rule-2: #232629; --accent: #93A9FF; --accent-ink: #0D1120; --accent-soft: #1D243B;
+    --easy: #6DC59A; --easy-soft: #15261E; --med: #E0AE58; --med-soft: #292115; --hard: #EF8981; --hard-soft: #2C1918;
+    --img-bg: #1C1C1C; --img-filter: invert(.89);
+    --shadow: 0 0 0 1px rgba(255, 255, 255, .06);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #101214; --sheet: #1B1C1D; --ink: #E6E8EA; --ink-2: #A8AFB6; --ink-3: #79818A;
+  --rule: #2D3135; --rule-2: #232629; --accent: #93A9FF; --accent-ink: #0D1120; --accent-soft: #1D243B;
+  --easy: #6DC59A; --easy-soft: #15261E; --med: #E0AE58; --med-soft: #292115; --hard: #EF8981; --hard-soft: #2C1918;
+  --img-bg: #1C1C1C; --img-filter: invert(.89);
+  --shadow: 0 0 0 1px rgba(255, 255, 255, .06);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink); font-family: var(--f-ui); font-size: 15px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+.wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* masthead */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--rule); }
+.top .wrap { display: flex; align-items: center; gap: 12px; padding-block: 10px; flex-wrap: wrap; }
+.brand { display: flex; align-items: baseline; gap: 10px; margin-right: auto; min-width: 0; }
+.brand b { font-family: var(--f-text); font-weight: 600; font-size: 1.3rem; letter-spacing: -.01em; white-space: nowrap; }
+.brand span { font-family: var(--f-mono); font-size: .78rem; color: var(--ink-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tabs { display: flex; gap: 2px; background: var(--rule-2); padding: 3px; border-radius: 9px; }
+.tabs a { text-decoration: none; color: var(--ink-2); font-size: .86rem; font-weight: 500; padding: 5px 11px; border-radius: 7px; }
+.tabs a[aria-current="page"] { background: var(--sheet); color: var(--ink); box-shadow: var(--shadow); }
+
+main { padding-block: 22px 64px; }
+.banner { font-size: .86rem; color: var(--ink-2); background: var(--sheet); border: 1px dashed var(--rule); border-radius: 10px; padding: 10px 14px; margin-bottom: 18px; }
+
+/* today header */
+.dayhead { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 6px 16px; margin-bottom: 18px; }
+.eyebrow { font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+.dayhead h1 { font-family: var(--f-text); font-weight: 600; font-size: 2rem; line-height: 1.1; margin: 2px 0 0; text-wrap: balance; }
+.dayhead .meta { grid-column: 1 / -1; color: var(--ink-2); font-size: .9rem; }
+.pips { display: flex; gap: 4px; align-items: center; justify-self: end; }
+.pip { width: 14px; height: 14px; border-radius: 3px; background: var(--rule-2); border: 1px solid var(--rule); }
+.pip.solved { background: var(--easy); border-color: var(--easy); }
+.pip.help { background: var(--med); border-color: var(--med); }
+.pip.failed { background: var(--hard); border-color: var(--hard); }
+.pipcount { font-family: var(--f-mono); font-size: .8rem; color: var(--ink-2); margin-left: 6px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.cards { display: grid; gap: 14px; }
+
+/* problem card */
+.card { background: var(--sheet); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+.card-in { padding: 16px 18px 14px; display: grid; gap: 10px; }
+.cmeta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: .8rem; color: var(--ink-3); }
+.cmeta .ref { font-family: var(--f-mono); font-size: .76rem; }
+.chip { display: inline-flex; align-items: center; gap: 5px; font-size: .74rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 0; cursor: pointer; line-height: 1.5; }
+.chip.easy { background: var(--easy-soft); color: var(--easy); }
+.chip.medium { background: var(--med-soft); color: var(--med); }
+.chip.hard { background: var(--hard-soft); color: var(--hard); }
+.tag { font-size: .72rem; font-weight: 500; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--rule); color: var(--ink-2); }
+.tag.review { border-color: var(--accent); color: var(--accent); }
+.retag { display: inline-flex; gap: 4px; }
+.cmeta .spacer { margin-left: auto; }
+.ctitle { font-family: var(--f-text); font-weight: 600; font-size: 1.28rem; line-height: 1.25; margin: 0; text-wrap: balance; }
+.stmt { font-family: var(--f-text); font-size: 1.12rem; line-height: 1.55; max-width: 65ch; display: grid; gap: .45em; overflow-wrap: anywhere; }
+.stmt p { margin: 0; }
+.stmt i { font-style: italic; }
+.stmt sup, .stmt sub { font-size: .7em; line-height: 0; }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--accent); font-size: .82rem; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; justify-self: start; }
+
+/* book scans */
+.scan { overflow-x: auto; background: var(--img-bg); border-radius: 8px; }
+.crop { position: relative; overflow: hidden; max-width: none; }
+.crop img { display: block; max-width: none; filter: var(--img-filter); user-select: none; -webkit-user-drag: none; }
+.crop.ld::before { content: "Loading…"; position: absolute; left: 16px; top: 12px; font-size: .82rem; color: var(--ink-3); }
+.crop.err::before { content: "This image did not load. Switch tabs and back to retry."; position: absolute; left: 16px; top: 12px; font-size: .82rem; color: var(--hard); }
+.crop img:not([src]) { visibility: hidden; }
+.crop.hint::after { content: ""; position: absolute; inset: auto 0 0; height: 45%; background: linear-gradient(to bottom, transparent, var(--img-bg)); }
+.solbox { border-top: 1px solid var(--rule-2); padding: 14px 18px; display: grid; gap: 10px; }
+.sollabel { font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; display: flex; justify-content: space-between; gap: 8px; }
+.sollabel span:last-child { font-family: var(--f-mono); letter-spacing: 0; text-transform: none; }
+
+/* actions */
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { border: 1px solid var(--rule); background: var(--sheet); color: var(--ink); border-radius: 8px; padding: 7px 13px; font-size: .88rem; font-weight: 500; cursor: pointer; }
+.btn:hover { border-color: var(--ink-3); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--ink-2); }
+.markrow { border-top: 1px solid var(--rule-2); padding: 12px 18px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: color-mix(in srgb, var(--paper) 45%, var(--sheet)); }
+.markrow .q { font-size: .82rem; color: var(--ink-2); margin-right: auto; }
+.mk { border: 1px solid var(--rule); background: var(--sheet); border-radius: 8px; padding: 6px 11px; font-size: .86rem; font-weight: 500; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.mk::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: .9; }
+.mk.solved { color: var(--easy); } .mk.help { color: var(--med); } .mk.failed { color: var(--hard); }
+.mk[aria-pressed="true"].solved { background: var(--easy-soft); border-color: var(--easy); }
+.mk[aria-pressed="true"].help { background: var(--med-soft); border-color: var(--med); }
+.mk[aria-pressed="true"].failed { background: var(--hard-soft); border-color: var(--hard); }
+
+/* collapsed (marked) card */
+.card.done .card-in { padding-block: 12px; }
+.rowhead { display: flex; align-items: center; gap: 10px; cursor: pointer; background: none; border: 0; width: 100%; text-align: left; padding: 0; }
+.rowhead .ctitle { font-size: 1.05rem; flex: 1; min-width: 0; }
+.verdict { font-size: .78rem; font-weight: 600; white-space: nowrap; }
+.verdict.solved { color: var(--easy); } .verdict.help { color: var(--med); } .verdict.failed { color: var(--hard); }
+
+/* set complete */
+.finish { background: var(--sheet); border-radius: 12px; box-shadow: var(--shadow); padding: 22px 20px; display: grid; gap: 12px; justify-items: start; margin-bottom: 14px; }
+.finish h2 { font-family: var(--f-text); font-size: 1.5rem; margin: 0; font-weight: 600; }
+.finish p { margin: 0; color: var(--ink-2); }
+
+/* library */
+.filters { display: grid; gap: 10px; margin-bottom: 14px; }
+.search { width: 100%; font: inherit; font-size: 1rem; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--rule); background: var(--sheet); color: var(--ink); }
+.frow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seg { display: inline-flex; gap: 2px; background: var(--rule-2); padding: 3px; border-radius: 9px; }
+.seg button { border: 0; background: transparent; padding: 4px 10px; border-radius: 7px; font-size: .82rem; color: var(--ink-2); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--sheet); color: var(--ink); box-shadow: var(--shadow); }
+select.sel { font: inherit; font-size: .84rem; padding: 5px 8px; border-radius: 8px; border: 1px solid var(--rule); background: var(--sheet); color: var(--ink); }
+.count { font-size: .82rem; color: var(--ink-3); margin: 0 0 8px; font-variant-numeric: tabular-nums; }
+.rows { display: grid; gap: 0; background: var(--sheet); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+.row { display: grid; grid-template-columns: 4.2em 1fr auto; gap: 10px; align-items: center; padding: 10px 14px; border-top: 1px solid var(--rule-2); cursor: pointer; background: none; border-left: 0; border-right: 0; border-bottom: 0; text-align: left; width: 100%; }
+.rows > :first-child { border-top: 0; }
+.row:hover { background: color-mix(in srgb, var(--paper) 50%, var(--sheet)); }
+.row .n { font-family: var(--f-mono); font-size: .8rem; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.row .t { min-width: 0; }
+.row .t b { font-weight: 500; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row .t small { color: var(--ink-3); font-size: .78rem; }
+.row .s { display: flex; gap: 8px; align-items: center; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--rule); flex: none; }
+.dot.solved { background: var(--easy); } .dot.help { background: var(--med); } .dot.failed { background: var(--hard); }
+.dot.due { background: transparent; border: 2px solid var(--accent); }
+.rowopen { border-top: 1px solid var(--rule-2); background: var(--paper); padding: 12px; }
+.more { display: flex; justify-content: center; padding: 14px; }
+
+/* progress */
+.hero { display: grid; gap: 10px; margin-bottom: 22px; }
+.big { font-family: var(--f-text); font-size: 2.6rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+.big small { font-size: 1rem; color: var(--ink-2); font-weight: 400; font-family: var(--f-ui); margin-left: 6px; }
+.stack { display: flex; height: 10px; border-radius: 99px; overflow: hidden; background: var(--rule-2); }
+.stack i { display: block; height: 100%; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .82rem; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--rule-2); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); margin-bottom: 26px; }
+.kpi { background: var(--sheet); padding: 12px 14px; display: grid; gap: 2px; min-width: 0; }
+.kpi b { font-size: 1.25rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.kpi span { font-size: .76rem; color: var(--ink-3); }
+@media (max-width: 560px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+h3.sec { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; margin: 0 0 10px; }
+.section { margin-bottom: 28px; }
+.bars { display: grid; gap: 9px; }
+.bar { display: grid; grid-template-columns: 7.5em 1fr 6.5em; gap: 12px; align-items: center; font-size: .86rem; }
+.bar .track { height: 8px; background: var(--rule-2); border-radius: 99px; overflow: hidden; display: flex; }
+.bar .track i { display: block; height: 100%; }
+.bar .num { text-align: right; font-family: var(--f-mono); font-size: .78rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.map { display: grid; grid-template-columns: repeat(auto-fill, minmax(9px, 1fr)); gap: 2px; }
+.map a { aspect-ratio: 1; border-radius: 2px; background: var(--rule-2); display: block; }
+.map a.solved { background: var(--easy); } .map a.help { background: var(--med); } .map a.failed { background: var(--hard); }
+.map a.today { box-shadow: inset 0 0 0 2px var(--accent); }
+.mapnote { font-size: .8rem; color: var(--ink-3); margin-top: 8px; }
+.heat { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 12px); grid-auto-columns: 12px; justify-content: start; gap: 3px; overflow-x: auto; padding-bottom: 4px; }
+.heat i { width: 12px; height: 12px; border-radius: 2px; background: var(--rule-2); display: block; }
+.heat i.l1 { background: color-mix(in srgb, var(--accent) 30%, var(--rule-2)); }
+.heat i.l2 { background: color-mix(in srgb, var(--accent) 60%, var(--rule-2)); }
+.heat i.l3 { background: var(--accent); }
+.heat i.fut { background: transparent; }
+
+/* prefs */
+.prefs { background: var(--sheet); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+.pref { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; align-items: center; padding: 14px 16px; border-top: 1px solid var(--rule-2); }
+.prefs > :first-child { border-top: 0; }
+.pref b { font-weight: 500; }
+.pref p { margin: 0; grid-column: 1; color: var(--ink-3); font-size: .84rem; }
+.step { display: inline-flex; align-items: center; border: 1px solid var(--rule); border-radius: 9px; overflow: hidden; grid-row: span 2; }
+.step button { border: 0; background: var(--sheet); width: 34px; height: 32px; cursor: pointer; font-size: 1.1rem; color: var(--ink-2); }
+.step output { min-width: 2.2em; text-align: center; font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.btn.danger { color: var(--hard); border-color: color-mix(in srgb, var(--hard) 40%, var(--rule)); }
+.btn.danger.armed { background: var(--hard); color: var(--sheet); border-color: var(--hard); }
+
+.empty { color: var(--ink-2); padding: 28px 4px; text-align: center; }
+@media (max-width: 560px) {
+  .card-in, .solbox, .markrow { padding-left: 14px; padding-right: 14px; }
+  .solbox { padding-left: 0; padding-right: 0; }
+  .solbox .sollabel, .solbox .actions { padding-inline: 14px; }
+  .scan { border-radius: 0; }
+  .dayhead h1 { font-size: 1.7rem; }
+  .bar { grid-template-columns: 6.2em 1fr 5.6em; gap: 8px; }
+  .tabs a { padding: 5px 8px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card, .finish { animation: rise .25s ease-out both; }
+  @keyframes rise { from { transform: translateY(4px); opacity: .6; } to { transform: none; opacity: 1; } }
+}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><b>Quant Guide Daily</b><span id="hdr-prog">1,210 problems</span></div>
+    <nav class="tabs" aria-label="Views">
+      <a href="#today" data-view="today">Today</a>
+      <a href="#library" data-view="library">Library</a>
+      <a href="#progress" data-view="progress">Progress</a>
+      <a href="#prefs" data-view="prefs">Settings</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="banner" class="banner" hidden></div>
+  <section id="v-today">
+    <div class="dayhead">
+      <div><div class="eyebrow" id="today-date">Today</div><h1>Loading today's set</h1></div>
+    </div>
+    <p class="empty">Fetching the problem book and your progress.</p>
+  </section>
+  <section id="v-library" hidden></section>
+  <section id="v-progress" hidden></section>
+  <section id="v-prefs" hidden></section>
+</main>
+
+<script>
+window.API = 'https://script.google.com/macros/s/AKfycbyyRKfe629g3pB-ZbQ8QRQctt2JJ1scYeqZ1S4V0FCnrafo4TAdhTkNtHH4AQnCdLDS/exec';
+window.BOOT = (function () {
+  var q = new URLSearchParams(location.search), k = q.get('k');
+  try { if (k) localStorage.setItem('qgd-k', k); else k = localStorage.getItem('qgd-k'); } catch (e) {}
+  return { k: k, q: /^\d{1,4}$/.test(q.get('q') || '') ? +q.get('q') : null, view: q.get('view') };
+})();
+</script>
+<script>/* Quant Guide Daily — set picker, shared by the page and the morning job.
+ * Pure functions over plain data:
+ *   catalog  : [{id, t, tp, d, ...}]
+ *   progress : {p: {"<id>": Entry}}         Entry = {s, st, due, at, h, b, d}
+ *              s  : 'solved' | 'help' | 'failed' | null (null/absent = not attempted)
+ *              st : 1 = review due in 4d, 2 = review due in 10d, 3 = done
+ *              due: 'YYYY-MM-DD' | null
+ *              h  : ['YYYY-MM-DD:s|h|f', ...] attempt history
+ *              b  : state before today's mark (for re-marking / undo)
+ *              d  : difficulty override
+ *   set      : {no, date, made, by, items: [{id, c?:1 (carried), r?:1 (review)}]}
+ *   settings : {size, reviews, tz}
+ */
+(function (root) {
+  'use strict';
+  var DEFAULTS = { size: 5, reviews: 2, tz: 'Asia/Kolkata' };
+  var DIFFS = ['easy', 'medium', 'hard'];
+  var REVIEW_GAP = { 1: 4, 2: 10 };
+  var CLOCK_SLACK = 10 * 60 * 1000; // tolerate device/server clock drift when matching marks to a set
+
+  function settingsOf(s) {
+    s = s || {};
+    return {
+      size: clampInt(s.size, 1, 15, DEFAULTS.size),
+      reviews: clampInt(s.reviews, 0, 5, DEFAULTS.reviews),
+      tz: typeof s.tz === 'string' && s.tz ? s.tz : DEFAULTS.tz,
+    };
+  }
+  function clampInt(v, lo, hi, dflt) {
+    v = Math.round(Number(v));
+    if (!isFinite(v)) return dflt;
+    return Math.max(lo, Math.min(hi, v));
+  }
+
+  function today(tz, now) {
+    var d = now ? new Date(now) : new Date();
+    try {
+      return new Intl.DateTimeFormat('en-CA', { timeZone: tz || DEFAULTS.tz, year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+    } catch (e) {
+      return d.toISOString().slice(0, 10);
+    }
+  }
+  function addDays(date, n) {
+    var t = Date.UTC(+date.slice(0, 4), +date.slice(5, 7) - 1, +date.slice(8, 10)) + n * 86400000;
+    return new Date(t).toISOString().slice(0, 10);
+  }
+  function daysBetween(a, b) {
+    var ta = Date.UTC(+a.slice(0, 4), +a.slice(5, 7) - 1, +a.slice(8, 10));
+    var tb = Date.UTC(+b.slice(0, 4), +b.slice(5, 7) - 1, +b.slice(8, 10));
+    return Math.round((tb - ta) / 86400000);
+  }
+
+  function entries(progress) { return (progress && progress.p) || {}; }
+  function attempted(e) { return !!(e && e.s); }
+  function diffOf(p, progress) {
+    var e = entries(progress)[p.id];
+    return (e && e.d && DIFFS.indexOf(e.d) >= 0) ? e.d : p.d;
+  }
+
+  /** Has this set item been marked since the set was made? */
+  function itemDone(item, set, progress) {
+    var e = entries(progress)[item.id];
+    return !!(e && e.s && e.at && e.at >= set.made - CLOCK_SLACK);
+  }
+  function setStatus(set, progress) {
+    if (!set || !set.items) return { done: 0, total: 0, complete: false };
+    var done = 0;
+    set.items.forEach(function (it) { if (itemDone(it, set, progress)) done++; });
+    return { done: done, total: set.items.length, complete: set.items.length > 0 && done === set.items.length };
+  }
+
+  function largestRemainder(size, counts) {
+    var total = 0, out = {}, rema = [];
+    DIFFS.forEach(function (d) { total += counts[d] || 0; });
+    if (!total) { DIFFS.forEach(function (d) { out[d] = 0; }); return out; }
+    var used = 0;
+    DIFFS.forEach(function (d) {
+      var q = (counts[d] || 0) / total * size;
+      out[d] = Math.floor(q); used += out[d];
+      rema.push([q - out[d], d]);
+    });
+    rema.sort(function (a, b) { return b[0] - a[0]; });
+    for (var i = 0; used < size && i < rema.length; i++) {
+      if ((counts[rema[i][1]] || 0) > out[rema[i][1]]) { out[rema[i][1]]++; used++; }
+    }
+    return out;
+  }
+
+  function shuffle(arr, rng) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(rng() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+
+  /** Build a set: carried items first, then fresh unseen problems, then due reviews. */
+  function makeSet(o) {
+    var cat = o.catalog, progress = o.progress || { p: {} }, st = settingsOf(o.settings);
+    var rng = o.rng || Math.random, day = o.today;
+    var byId = {}; cat.forEach(function (p) { byId[p.id] = p; });
+    var E = entries(progress);
+    var carry = (o.carry || []).filter(function (it) { return byId[it.id]; });
+    var items = carry.map(function (it) { var x = { id: it.id, c: 1 }; if (it.r) x.r = 1; return x; });
+    var inSet = {}; items.forEach(function (it) { inSet[it.id] = 1; });
+
+    var carriedNew = items.filter(function (it) { return !it.r; });
+    var need = Math.max(0, st.size - carriedNew.length);
+
+    // difficulty targets proportional to what is left unseen, so every bucket runs out together
+    var counts = { easy: 0, medium: 0, hard: 0 }, pools = { easy: [], medium: [], hard: [] };
+    cat.forEach(function (p) {
+      if (attempted(E[p.id])) return;
+      var d = diffOf(p, progress); counts[d]++;
+      if (!inSet[p.id]) pools[d].push(p);
+    });
+    var target = largestRemainder(st.size, counts);
+    carriedNew.forEach(function (it) {
+      var d = diffOf(byId[it.id], progress);
+      if (target[d] > 0) target[d]--;
+      else {
+        var big = DIFFS.slice().sort(function (a, b) { return target[b] - target[a]; })[0];
+        if (target[big] > 0) target[big]--;
+      }
+    });
+    var sum = DIFFS.reduce(function (a, d) { return a + target[d]; }, 0);
+    while (sum > need) { var bd = DIFFS.slice().sort(function (a, b) { return target[b] - target[a]; })[0]; target[bd]--; sum--; }
+
+    var topicCount = {};
+    items.forEach(function (it) { var tp = byId[it.id].tp; topicCount[tp] = (topicCount[tp] || 0) + 1; });
+    var cap = Math.max(2, Math.ceil(st.size * 0.6));
+    function take(d, n) {
+      var pool = shuffle(pools[d].filter(function (p) { return !inSet[p.id]; }), rng);
+      var got = [];
+      for (var pass = 0; pass < 2 && got.length < n; pass++) {
+        for (var i = 0; i < pool.length && got.length < n; i++) {
+          var p = pool[i];
+          if (inSet[p.id]) continue;
+          if (pass === 0 && (topicCount[p.tp] || 0) >= cap) continue;
+          inSet[p.id] = 1; topicCount[p.tp] = (topicCount[p.tp] || 0) + 1;
+          got.push({ id: p.id });
+        }
+      }
+      return got;
+    }
+    var fresh = [];
+    DIFFS.forEach(function (d) { fresh = fresh.concat(take(d, target[d])); });
+    // a bucket ran short: top up from the others
+    var order = ['medium', 'easy', 'hard'];
+    for (var k = 0; fresh.length < need && k < order.length; k++) fresh = fresh.concat(take(order[k], need - fresh.length));
+
+    // spaced-repetition reviews
+    var carriedRev = items.filter(function (it) { return it.r; }).length;
+    var revSlots = Math.max(0, st.reviews - carriedRev);
+    var due = Object.keys(E).filter(function (id) {
+      var e = E[id];
+      return byId[id] && attempted(e) && (e.st === 1 || e.st === 2) && e.due && e.due <= day && !inSet[id] && !(e.h && e.h.length && e.h[e.h.length - 1].slice(0, 10) === day);
+    }).sort(function (a, b) { return E[a].due < E[b].due ? -1 : E[a].due > E[b].due ? 1 : a - b; });
+    var reviews = due.slice(0, revSlots).map(function (id) { inSet[id] = 1; return { id: +id, r: 1 }; });
+
+    var rank = { easy: 0, medium: 1, hard: 2 };
+    var all = items.concat(fresh).filter(function (it) { return !it.r; });
+    all.sort(function (a, b) { return rank[diffOf(byId[a.id], progress)] - rank[diffOf(byId[b.id], progress)]; });
+    all = all.concat(items.filter(function (it) { return it.r; })).concat(reviews);
+
+    return {
+      no: ((o.prev && o.prev.no) || 0) + 1,
+      date: day,
+      made: o.now || Date.now(),
+      by: o.by || 'page',
+      items: all,
+    };
+  }
+
+  /** Start-of-day logic: same day keeps the set; a new day carries over unmarked items and tops up. */
+  function rollover(o) {
+    var set = o.set;
+    if (set && set.items && set.date === o.today) return { set: set, changed: false };
+    var carry = [];
+    if (set && set.items) carry = set.items.filter(function (it) { return !itemDone(it, set, o.progress); });
+    var ns = makeSet(Object.assign({}, o, { carry: carry, prev: set }));
+    return { set: ns, changed: true, carried: carry.length };
+  }
+
+  /** "Keep feeding": a fresh set right now, carrying anything still unmarked. */
+  function nextSet(o) {
+    var set = o.set, carry = [];
+    if (set && set.items) carry = set.items.filter(function (it) { return !itemDone(it, set, o.progress); });
+    return makeSet(Object.assign({}, o, { carry: carry, prev: set }));
+  }
+
+  /** Apply a mark ('solved' | 'help' | 'failed' | null to clear) and return the new entry. */
+  function mark(prev, m, day, now) {
+    prev = prev || {};
+    var h = (prev.h || []).slice();
+    var base;
+    if (h.length && h[h.length - 1].slice(0, 10) === day && prev.b) {
+      base = prev.b; h.pop();            // re-marking today: start again from the state before today's mark
+    } else {
+      base = { s: prev.s || null, st: prev.st || null, due: prev.due || null, at: prev.at || null };
+    }
+    var e = { d: prev.d || null, b: null, h: h, s: base.s, st: base.st, due: base.due, at: base.at };
+    if (!m) return e;                     // cleared: back to the earlier state
+    if (m === 'solved') {
+      if (base.st === 1) { e.st = 2; e.due = addDays(day, REVIEW_GAP[2]); }
+      else { e.st = 3; e.due = null; }
+    } else {
+      e.st = 1; e.due = addDays(day, REVIEW_GAP[1]);
+    }
+    e.s = m; e.at = now; e.h = h.concat([day + ':' + m.charAt(0)]);
+    e.b = { s: base.s, st: base.st, due: base.due, at: base.at };
+    return e;
+  }
+
+  function stats(o) {
+    var cat = o.catalog, progress = o.progress, day = o.today, E = entries(progress);
+    var out = { total: cat.length, attempted: 0, solved: 0, help: 0, failed: 0, mastered: 0, due: 0,
+      byDiff: {}, byTopic: {}, days: {}, streak: 0, last14: 0 };
+    DIFFS.forEach(function (d) { out.byDiff[d] = { total: 0, done: 0, solved: 0 }; });
+    cat.forEach(function (p) {
+      var d = diffOf(p, progress), e = E[p.id];
+      var t = out.byTopic[p.tp] || (out.byTopic[p.tp] = { total: 0, done: 0, solved: 0 });
+      out.byDiff[d].total++; t.total++;
+      if (!attempted(e)) return;
+      out.attempted++; out.byDiff[d].done++; t.done++;
+      if (e.s === 'solved') { out.solved++; out.byDiff[d].solved++; t.solved++; }
+      else if (e.s === 'help') out.help++; else out.failed++;
+      if (e.st === 3) out.mastered++;
+      if ((e.st === 1 || e.st === 2) && e.due && e.due <= day) out.due++;
+      (e.h || []).forEach(function (x) { var k = x.slice(0, 10); out.days[k] = (out.days[k] || 0) + 1; });
+    });
+    var cur = out.days[day] ? day : addDays(day, -1);
+    while (out.days[cur]) { out.streak++; cur = addDays(cur, -1); }
+    for (var i = 0; i < 14; i++) out.last14 += out.days[addDays(day, -i)] || 0;
+    var firstDay = Object.keys(out.days).sort()[0];
+    var span = firstDay ? Math.min(14, daysBetween(firstDay, day) + 1) : 0;
+    out.spanDays = span;
+    out.pace = span ? out.last14 / span : 0; // attempts per day, includes reviews
+    var left = out.total - out.attempted;
+    out.finish = out.pace > 0 ? addDays(day, Math.ceil(left / out.pace)) : null;
+    return out;
+  }
+
+  var API = { DEFAULTS: DEFAULTS, DIFFS: DIFFS, settingsOf: settingsOf, today: today, addDays: addDays,
+    daysBetween: daysBetween, diffOf: diffOf, itemDone: itemDone, setStatus: setStatus, makeSet: makeSet,
+    rollover: rollover, nextSet: nextSet, mark: mark, stats: stats, largestRemainder: largestRemainder };
+  if (typeof module !== 'undefined' && module.exports) module.exports = API;
+  else root.QuantPicker = API;
+})(typeof self !== 'undefined' ? self : this);
+</script>
+<script>
+(function () {
+  'use strict';
+  var P = window.QuantPicker;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var fmt = function (n) { return Number(n).toLocaleString('en-US'); };
+  var cap = function (s) { return s.charAt(0).toUpperCase() + s.slice(1); };
+  var MARK_LABEL = { solved: 'Solved', help: 'Solved with help', failed: "Couldn't solve" };
+
+  var S = {
+    cat: null, byId: {}, stdW: 1002,
+    progress: { p: {} }, set: null, settings: {},
+    started: false, view: 'today'
+  };
+  var ui = { open: {}, sol: {}, hint: {}, book: {}, retag: {}, lib: { q: '', d: 'all', tp: 'all', st: 'all', limit: 60, open: null }, resetArmed: false };
+  try { var saved = JSON.parse(localStorage.getItem('qgd-lib') || 'null'); if (saved) { ui.lib.d = saved.d || 'all'; ui.lib.tp = saved.tp || 'all'; ui.lib.st = saved.st || 'all'; } } catch (e) {}
+
+  function settings() { return P.settingsOf(S.settings); }
+  function today() { return serverToday || P.today(settings().tz); }
+  function entry(id) { return S.progress.p[id] || null; }
+  function diff(p) { return P.diffOf(p, S.progress); }
+  function status(id) {
+    var e = entry(id);
+    if (!e || !e.s) return 'new';
+    if ((e.st === 1 || e.st === 2) && e.due && e.due <= today()) return 'due';
+    return e.s;
+  }
+
+  /* ---------- data: your Google Apps Script backend ---------- */
+  var HAS_GS = !!(window.API && window.BOOT && window.BOOT.k);
+  var serverToday = null;
+  function call(fn, args, retry) {
+    var url = window.API + '?api=' + encodeURIComponent(fn) + '&k=' + encodeURIComponent(window.BOOT.k) + '&a=' + encodeURIComponent(JSON.stringify(args || []));
+    return fetch(url, { credentials: 'omit', redirect: 'follow', cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('server ' + r.status); return r.json(); })
+      .then(function (o) { if (!o.ok) { var e = new Error(o.error || 'server error'); e.server = true; throw e; } return o.r; })
+      .catch(function (e) {
+        if (!e.server && !retry) return new Promise(function (res) { setTimeout(res, 800); }).then(function () { return call(fn, args, true); });
+        throw e;
+      });
+  }
+  function banner(t) { var b = $('#banner'); if (!t) { b.hidden = true; return; } b.textContent = t; b.hidden = false; }
+  function applyState(json) {
+    var o = JSON.parse(json);
+    S.progress = o.state.progress || { p: {} };
+    S.progress.p = S.progress.p || {};
+    S.set = o.state.set || null;
+    S.settings = o.state.settings || {};
+    serverToday = o.today || serverToday;
+    render();
+  }
+  // one request at a time, in order; the last answer is the source of truth
+  var chain = Promise.resolve(), inflight = 0;
+  function send(fn, args) {
+    inflight++;
+    var p = chain.then(function () { return call(fn, args); }).then(function (json) {
+      inflight--;
+      banner('');
+      if (inflight === 0) applyState(json);
+      return json;
+    }, function (err) {
+      inflight--;
+      banner('That change was not saved: ' + ((err && err.message) || 'no connection') + '. Reload the page and try again.');
+    });
+    chain = p;
+    return p;
+  }
+  function refresh() {
+    if (inflight) return;
+    call('apiState').then(applyState, function () {});
+  }
+
+  /* ---------- scans (images live in your Drive folder) ---------- */
+  var imgCache = {}, imgWait = {};
+  function loadImg(name) {
+    if (imgCache[name]) return Promise.resolve(imgCache[name]);
+    if (!imgWait[name]) {
+      imgWait[name] = call('apiImage', [name]).then(function (d) { imgCache[name] = d; return d; }, function (e) { delete imgWait[name]; throw e; });
+    }
+    return imgWait[name];
+  }
+  function hydrate() {
+    Array.prototype.forEach.call(document.querySelectorAll('img[data-src]'), function (img) {
+      var n = img.getAttribute('data-src');
+      var done = function (d) { img.src = d; img.removeAttribute('data-src'); if (img.parentNode) img.parentNode.classList.remove('ld'); };
+      if (imgCache[n]) return done(imgCache[n]);
+      if (img.dataset.busy) return;
+      img.dataset.busy = '1';
+      loadImg(n).then(done, function () { delete img.dataset.busy; if (img.parentNode) img.parentNode.classList.add('err'); });
+    });
+  }
+  function scan(name, w, h, maxH, extraCls) {
+    var H = maxH ? Math.min(maxH, h) : h;
+    var pad = 14;                                  // trim most of the 8pt side margin baked into each crop
+    var vw = w - 2 * pad, std = (S.stdW || 1002) - 2 * pad;
+    var cw = Math.max(100, vw / std * 100);
+    return '<div class="scan"><div class="crop ld' + (extraCls ? ' ' + extraCls : '') + '" style="width:' + cw.toFixed(3) + '%;aspect-ratio:' + vw + ' / ' + H + '">' +
+      '<img alt="" data-src="' + esc(name) + '" style="width:' + (w / vw * 100).toFixed(4) + '%;transform:translateX(-' + (pad / w * 100).toFixed(5) + '%)"></div></div>';
+  }
+
+  /* ---------- card ---------- */
+  function card(p, ctx, opt) {
+    opt = opt || {};
+    var key = ctx + ':' + p.id, d = diff(p), e = entry(p.id);
+    var marked = opt.markedHere;              // marked within this set (today view)
+    var collapsed = opt.collapsible && marked && !ui.open[key];
+    var mk = marked ? e.s : (ctx === 'lib' && e && e.s ? e.s : null);
+    var chip = ui.retag[key]
+      ? '<span class="retag">' + P.DIFFS.map(function (x) { return '<button class="chip ' + x + '" data-act="retag-pick" data-id="' + p.id + '" data-key="' + key + '" data-d="' + x + '">' + x + '</button>'; }).join('') + '</span>'
+      : '<button class="chip ' + d + '" data-act="retag" data-key="' + key + '" title="Change difficulty">' + d + '</button>';
+    var tags = '';
+    if (opt.item && opt.item.r) tags += '<span class="tag review">Review</span>';
+    else if (opt.item && opt.item.c) tags += '<span class="tag">Carried over</span>';
+    if (ctx === 'lib' && status(p.id) === 'due') tags += '<span class="tag review">Review due</span>';
+    var meta = '<div class="cmeta">' + chip + '<span>' + esc(p.tp) + '</span><span class="ref">Q' + p.id + ' · p. ' + p.pg + '</span>' + tags + '</div>';
+
+    if (collapsed) {
+      return '<article class="card done" data-key="' + key + '"><div class="card-in">' + meta +
+        '<button class="rowhead" data-act="toggle" data-key="' + key + '" aria-expanded="false"><h2 class="ctitle">' + esc(p.t) + '</h2>' +
+        '<span class="verdict ' + e.s + '">' + MARK_LABEL[e.s] + '</span></button></div></article>';
+    }
+    var body;
+    if (p.c && p.qi) body = scan('q' + p.id + '.png', p.qi[0], p.qi[1]);
+    else body = '<div class="stmt">' + (p.h || [esc(p.x.join(' '))]).map(function (x) { return '<p>' + x + '</p>'; }).join('') + '</div>';
+    var bookBtn = '';
+
+    var title = opt.collapsible && marked
+      ? '<button class="rowhead" data-act="toggle" data-key="' + key + '" aria-expanded="true"><h2 class="ctitle">' + esc(p.t) + '</h2><span class="verdict ' + e.s + '">' + MARK_LABEL[e.s] + '</span></button>'
+      : '<h2 class="ctitle">' + esc(p.t) + '</h2>';
+
+    var sol = '';
+    if (ui.sol[key]) {
+      sol = '<div class="solbox"><div class="sollabel"><span>Solution</span><span>p. ' + p.sp + '</span></div>' + scan('s' + p.id + '.webp', p.si[0], p.si[1]) +
+        '<div class="actions"><button class="btn ghost" data-act="sol" data-key="' + key + '">Hide solution</button></div></div>';
+    } else if (ui.hint[key] && p.hint) {
+      sol = '<div class="solbox"><div class="sollabel"><span>Hint: the solution\'s opening lines</span><span>p. ' + p.sp + '</span></div>' + scan('s' + p.id + '.webp', p.si[0], p.si[1], p.hint, 'hint') +
+        '<div class="actions"><button class="btn primary" data-act="sol" data-key="' + key + '">Show full solution</button><button class="btn ghost" data-act="hint" data-key="' + key + '">Hide hint</button></div></div>';
+    } else {
+      sol = '<div class="solbox"><div class="actions">' +
+        '<button class="btn primary" data-act="sol" data-key="' + key + '">Show solution</button>' +
+        (p.hint ? '<button class="btn" data-act="hint" data-key="' + key + '">Hint</button>' : '') + '</div></div>';
+    }
+    var marks = ['solved', 'help', 'failed'].map(function (m) {
+      return '<button class="mk ' + m + '" data-act="mark" data-id="' + p.id + '" data-m="' + m + '" aria-pressed="' + (mk === m) + '">' + MARK_LABEL[m] + '</button>';
+    }).join('');
+    var lastToday = e && e.h && e.h.length && e.h[e.h.length - 1].slice(0, 10) === today();
+    var clear = mk && lastToday ? '<button class="btn ghost" data-act="clear" data-id="' + p.id + '">Clear</button>' : '';
+    return '<article class="card" data-key="' + key + '"><div class="card-in">' + meta + title + body + bookBtn + '</div>' + sol +
+      '<div class="markrow"><span class="q">' + (mk ? 'Marked. Change it if you need to.' : 'How did it go?') + '</span>' + marks + clear + '</div></article>';
+  }
+
+  function patch(container, items) {
+    var existing = {};
+    Array.prototype.forEach.call(container.children, function (n) { if (n.dataset.k) existing[n.dataset.k] = n; });
+    var frag = document.createDocumentFragment();
+    items.forEach(function (it) {
+      var n = existing[it.k];
+      if (n && n.dataset.sig === it.html) { delete existing[it.k]; frag.appendChild(n); return; }
+      var t = document.createElement('div'); t.innerHTML = it.html;
+      var el = t.firstElementChild; el.dataset.k = it.k; el.dataset.sig = it.html;
+      frag.appendChild(el);
+    });
+    container.textContent = ''; container.appendChild(frag);
+  }
+
+  /* ---------- views ---------- */
+  function niceDate(d) { return new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }); }
+
+  function renderToday() {
+    var v = $('#v-today');
+    if (!S.cat) return;
+    var set = S.set;
+    if (!set || !set.items) {
+      v.innerHTML = '<div class="dayhead"><div><div class="eyebrow">' + esc(niceDate(today())) + '</div><h1>Setting up today\'s set</h1></div></div><p class="empty">Reading your progress.</p>';
+      return;
+    }
+    var stt = P.setStatus(set, S.progress);
+    var pips = set.items.map(function (it) {
+      var e = entry(it.id), done = P.itemDone(it, set, S.progress);
+      return '<span class="pip ' + (done ? e.s : '') + '" title="' + esc(S.byId[it.id] ? S.byId[it.id].t : '') + '"></span>';
+    }).join('');
+    var carried = set.items.filter(function (it) { return it.c && !it.r; }).length;
+    var reviews = set.items.filter(function (it) { return it.r; }).length;
+    var counts = { easy: 0, medium: 0, hard: 0 };
+    set.items.forEach(function (it) { if (!it.r && S.byId[it.id]) counts[diff(S.byId[it.id])]++; });
+    var mix = P.DIFFS.filter(function (d) { return counts[d]; }).map(function (d) { return counts[d] + ' ' + d; }).join(', ');
+    var bits = [mix];
+    if (reviews) bits.push(reviews + ' review' + (reviews > 1 ? 's' : ''));
+    if (carried) bits.push(carried + ' carried over');
+    var stale = set.date !== today();
+
+    var head = '<div class="dayhead"><div><div class="eyebrow">' + esc(niceDate(set.date)) + (stale ? ' · earlier set' : '') + '</div><h1>Set ' + set.no + '</h1></div>' +
+      '<div class="pips" aria-label="' + stt.done + ' of ' + stt.total + ' done">' + pips + '<span class="pipcount">' + stt.done + '/' + stt.total + '</span></div>' +
+      '<div class="meta">' + esc(bits.join(' · ')) + '</div></div>';
+
+    var fin = '';
+    if (stt.complete) {
+      var tally = { solved: 0, help: 0, failed: 0 };
+      set.items.forEach(function (it) { var e = entry(it.id); if (e && e.s) tally[e.s]++; });
+      var parts = []; if (tally.solved) parts.push(tally.solved + ' solved'); if (tally.help) parts.push(tally.help + ' with help'); if (tally.failed) parts.push(tally.failed + " not yet");
+      fin = '<div class="finish"><h2>Set ' + set.no + ' done</h2><p>' + esc(parts.join(', ')) + '. Anything you couldn\'t solve comes back for review in 4 days.</p>' +
+        '<div class="actions"><button class="btn primary" data-act="next-set">Give me the next ' + settings().size + '</button><span style="color:var(--ink-3);font-size:.84rem">or stop here; tomorrow\'s set arrives in the morning.</span></div></div>';
+    }
+
+    if (!v.querySelector('.cards')) v.innerHTML = '<div id="t-head"></div><div id="t-fin"></div><div class="cards"></div>';
+    $('#t-head', v).innerHTML = head;
+    $('#t-fin', v).innerHTML = fin;
+    var items = set.items.filter(function (it) { return S.byId[it.id]; }).map(function (it) {
+      var p = S.byId[it.id];
+      var html = card(p, 't' + set.no, { item: it, collapsible: true, markedHere: P.itemDone(it, set, S.progress) });
+      return { k: 't' + set.no + ':' + it.id, html: html };
+    });
+    patch($('.cards', v), items);
+  }
+
+  function libMatches() {
+    var q = ui.lib.q.trim().toLowerCase(), out = [];
+    var qn = q.replace(/^q/, '');
+    S.cat.forEach(function (p) {
+      if (ui.lib.d !== 'all' && diff(p) !== ui.lib.d) return;
+      if (ui.lib.tp !== 'all' && p.tp !== ui.lib.tp) return;
+      var st = status(p.id);
+      if (ui.lib.st === 'new' && st !== 'new') return;
+      if (ui.lib.st === 'done' && (st === 'new')) return;
+      if (ui.lib.st === 'due' && st !== 'due') return;
+      if (ui.lib.st === 'missed' && !(entry(p.id) && (entry(p.id).s === 'failed' || entry(p.id).s === 'help'))) return;
+      if (q) {
+        if (/^\d+$/.test(qn)) { if (String(p.id) !== qn && String(p.id).indexOf(qn) !== 0) return; }
+        else if (!p._hay) p._hay = (p.t + ' ' + p.tp + ' ' + p.x.join(' ')).toLowerCase();
+        if (!/^\d+$/.test(qn) && p._hay.indexOf(q) < 0) return;
+      }
+      out.push(p);
+    });
+    return out;
+  }
+  function renderLibrary() {
+    var v = $('#v-library');
+    if (!S.cat) return;
+    if (!v.querySelector('.filters')) {
+      var topics = Object.keys(S.cat.reduce(function (a, p) { a[p.tp] = 1; return a; }, {})).sort();
+      v.innerHTML = '<div class="filters"><input id="lib-q" class="search" type="search" placeholder="Search 1,210 problems by title, words or number" autocomplete="off">' +
+        '<div class="frow"><div class="seg" id="lib-d">' + ['all', 'easy', 'medium', 'hard'].map(function (d) { return '<button data-act="lib-d" data-v="' + d + '">' + cap(d) + '</button>'; }).join('') + '</div>' +
+        '<select id="lib-tp" class="sel" aria-label="Topic"><option value="all">All topics</option>' + topics.map(function (t) { return '<option value="' + esc(t) + '">' + esc(cap(t)) + '</option>'; }).join('') + '</select>' +
+        '<select id="lib-st" class="sel" aria-label="Status"><option value="all">Any status</option><option value="new">Not attempted</option><option value="done">Attempted</option><option value="missed">Needed help or missed</option><option value="due">Review due</option></select></div></div>' +
+        '<p class="count" id="lib-count"></p><div class="rows" id="lib-rows"></div><div class="more" id="lib-more"></div>';
+      $('#lib-q').value = ui.lib.q;
+      $('#lib-q').addEventListener('input', function (e) { ui.lib.q = e.target.value; ui.lib.limit = 60; ui.lib.open = null; renderLibrary(); });
+      $('#lib-tp').addEventListener('change', function (e) { ui.lib.tp = e.target.value; ui.lib.limit = 60; saveLib(); renderLibrary(); });
+      $('#lib-st').addEventListener('change', function (e) { ui.lib.st = e.target.value; ui.lib.limit = 60; saveLib(); renderLibrary(); });
+    }
+    $('#lib-tp').value = ui.lib.tp; $('#lib-st').value = ui.lib.st;
+    Array.prototype.forEach.call(v.querySelectorAll('#lib-d button'), function (b) { b.setAttribute('aria-pressed', String(b.dataset.v === ui.lib.d)); });
+    var list = libMatches();
+    $('#lib-count').textContent = fmt(list.length) + (list.length === 1 ? ' problem' : ' problems');
+    var shown = list.slice(0, ui.lib.limit);
+    if (ui.lib.open && !shown.some(function (p) { return p.id === ui.lib.open; })) {
+      var op = S.byId[ui.lib.open]; if (op && list.indexOf(op) >= 0) shown.push(op);
+    }
+    var todayIds = {}; if (S.set && S.set.items) S.set.items.forEach(function (it) { todayIds[it.id] = 1; });
+    var items = [];
+    shown.forEach(function (p) {
+      var st = status(p.id), d = diff(p);
+      var dot = st === 'new' ? '' : st;
+      var html = '<button class="row" data-act="lib-open" data-id="' + p.id + '" aria-expanded="' + (ui.lib.open === p.id) + '"><span class="n">Q' + p.id + '</span>' +
+        '<span class="t"><b>' + esc(p.t) + '</b><small>' + esc(p.tp) + (todayIds[p.id] ? ' · in today\'s set' : '') + '</small></span>' +
+        '<span class="s"><span class="chip ' + d + '" style="cursor:inherit">' + d + '</span><span class="dot ' + dot + '" title="' + (st === 'new' ? 'Not attempted' : st === 'due' ? 'Review due' : MARK_LABEL[st]) + '"></span></span></button>';
+      items.push({ k: 'r' + p.id, html: html });
+      if (ui.lib.open === p.id) items.push({ k: 'o' + p.id, html: '<div class="rowopen">' + card(p, 'lib', {}) + '</div>' });
+    });
+    if (!list.length) items.push({ k: 'none', html: '<p class="empty">No problems match these filters.</p>' });
+    patch($('#lib-rows'), items);
+    $('#lib-more').innerHTML = list.length > ui.lib.limit ? '<button class="btn" data-act="more">Show more (' + fmt(list.length - ui.lib.limit) + ' left)</button>' : '';
+  }
+  function saveLib() { try { localStorage.setItem('qgd-lib', JSON.stringify({ d: ui.lib.d, tp: ui.lib.tp, st: ui.lib.st })); } catch (e) {} }
+
+  function renderProgress() {
+    var v = $('#v-progress');
+    if (!S.cat) return;
+    var day = today(), s = P.stats({ catalog: S.cat, progress: S.progress, today: day });
+    var pct = function (n, t) { return t ? (n / t * 100) : 0; };
+    var head = '<div class="hero"><div class="eyebrow">Book progress</div><div class="big">' + fmt(s.attempted) + '<small>of ' + fmt(s.total) + ' attempted · ' + pct(s.attempted, s.total).toFixed(1) + '%</small></div>' +
+      '<div class="stack" role="img" aria-label="' + s.solved + ' solved, ' + s.help + ' with help, ' + s.failed + ' not solved"><i style="width:' + pct(s.solved, s.total) + '%;background:var(--easy)"></i><i style="width:' + pct(s.help, s.total) + '%;background:var(--med)"></i><i style="width:' + pct(s.failed, s.total) + '%;background:var(--hard)"></i></div>' +
+      '<div class="legend"><span><span class="dot solved"></span>Solved ' + fmt(s.solved) + '</span><span><span class="dot help"></span>With help ' + fmt(s.help) + '</span><span><span class="dot failed"></span>Couldn\'t solve ' + fmt(s.failed) + '</span><span><span class="dot"></span>Not attempted ' + fmt(s.total - s.attempted) + '</span></div></div>';
+    var fin = s.finish && s.spanDays >= 3 ? new Date(s.finish + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : '—';
+    var kpis = '<div class="kpis"><div class="kpi"><b>' + s.streak + '</b><span>day streak</span></div><div class="kpi"><b>' + (s.pace ? s.pace.toFixed(1) : '0') + '</b><span>attempts a day, last 14 days</span></div>' +
+      '<div class="kpi"><b>' + fin + '</b><span>' + (s.spanDays >= 3 ? 'finish at this pace' : 'finish date appears after 3 days') + '</span></div><div class="kpi"><b>' + s.due + '</b><span>reviews due</span></div></div>';
+    var bar = function (label, o, cls) {
+      return '<div class="bar"><span>' + esc(label) + '</span><span class="track"><i style="width:' + pct(o.solved, o.total) + '%;background:var(--easy)"></i><i style="width:' + pct(o.done - o.solved, o.total) + '%;background:var(--med)"></i></span><span class="num">' + fmt(o.done) + ' / ' + fmt(o.total) + '</span></div>';
+    };
+    var diffBars = '<div class="section"><h3 class="sec">By difficulty</h3><div class="bars">' + P.DIFFS.map(function (d) { return bar(cap(d), s.byDiff[d]); }).join('') + '</div></div>';
+    var topicBars = '<div class="section"><h3 class="sec">By topic</h3><div class="bars">' + Object.keys(s.byTopic).sort(function (a, b) { return s.byTopic[b].total - s.byTopic[a].total; }).map(function (t) { return bar(cap(t), s.byTopic[t]); }).join('') + '</div></div>';
+    var todayIds = {}; if (S.set && S.set.items) S.set.items.forEach(function (it) { todayIds[it.id] = 1; });
+    var cells = S.cat.map(function (p) { var e = entry(p.id); return '<a href="#q' + p.id + '" class="' + (e && e.s ? e.s : '') + (todayIds[p.id] ? ' today' : '') + '" title="Q' + p.id + ' · ' + esc(p.t) + '" aria-label="Question ' + p.id + '"></a>'; }).join('');
+    var map = '<div class="section"><h3 class="sec">The whole book, Q1 to Q' + S.cat.length + '</h3><div class="map">' + cells + '</div><p class="mapnote">One square per problem in book order. Outlined squares are in your current set. Tap a square to open that problem.</p></div>';
+    // 16-week activity
+    var start = P.addDays(day, -(7 * 15) - ((new Date(day + 'T00:00:00Z').getUTCDay() + 6) % 7));
+    var heat = '';
+    for (var i = 0; i < 16 * 7; i++) {
+      var dd = P.addDays(start, i), n = s.days[dd] || 0;
+      var lv = dd > day ? 'fut' : n === 0 ? '' : n < 3 ? 'l1' : n < 6 ? 'l2' : 'l3';
+      heat += '<i class="' + lv + '" title="' + dd + ': ' + n + ' attempt' + (n === 1 ? '' : 's') + '"></i>';
+    }
+    var act = '<div class="section"><h3 class="sec">Last 16 weeks</h3><div class="heat">' + heat + '</div></div>';
+    v.innerHTML = head + kpis + diffBars + topicBars + map + act;
+  }
+
+  function renderPrefs() {
+    var v = $('#v-prefs'), st = settings();
+    var stepper = function (id, val) { return '<div class="step"><button data-act="step" data-k="' + id + '" data-d="-1" aria-label="Fewer">−</button><output>' + val + '</output><button data-act="step" data-k="' + id + '" data-d="1" aria-label="More">+</button></div>'; };
+    v.innerHTML = '<div class="prefs">' +
+      '<div class="pref"><b>Problems per set</b>' + stepper('size', st.size) + '<p>New problems in each set. The easy, medium and hard mix follows what is left in the book, so all three run out together.</p></div>' +
+      '<div class="pref"><b>Reviews per set</b>' + stepper('reviews', st.reviews) + '<p>Problems you needed help with or couldn\'t solve come back after 4 days, then again after 10. These ride on top of the new problems.</p></div>' +
+      '<div class="pref"><b>Morning email</b><span></span><p>Every morning between 6 and 7 AM India time your Gmail sends you the day\'s set. Unfinished problems carry over; a finished set makes room for new ones. To change the time, edit HOUR at the top of the script and run setup again.</p></div>' +
+      '<div class="pref"><b>Start over</b><button class="btn danger' + (ui.resetArmed ? ' armed' : '') + '" data-act="reset">' + (ui.resetArmed ? 'Tap again to erase everything' : 'Reset progress') + '</button><p>Clears every mark, review and set. The book itself stays.</p></div>' +
+      '</div>';
+  }
+
+  function renderHeader() {
+    if (!S.cat) return;
+    var n = 0; Object.keys(S.progress.p).forEach(function (k) { if (S.progress.p[k].s) n++; });
+    $('#hdr-prog').textContent = fmt(n) + ' / ' + fmt(S.cat.length);
+  }
+
+  var rq = false;
+  function render() {
+    if (rq) return; rq = true;
+    requestAnimationFrame(function () {
+      rq = false;
+      renderHeader();
+      if (S.view === 'today') renderToday();
+      else if (S.view === 'library') renderLibrary();
+      else if (S.view === 'progress') renderProgress();
+      else if (S.view === 'prefs') renderPrefs();
+      hydrate();
+    });
+  }
+
+  /* ---------- routing ---------- */
+  function route() {
+    var h = (location.hash || '').replace('#', '');
+    var m = /^q(\d+)$/.exec(h);
+    var view = m ? 'library' : (['today', 'library', 'progress', 'prefs'].indexOf(h) >= 0 ? h : 'today');
+    if (m && S.byId[+m[1]]) { ui.lib.open = +m[1]; ui.lib.q = m[1]; ui.lib.d = 'all'; ui.lib.tp = 'all'; ui.lib.st = 'all'; var qi = $('#lib-q'); if (qi) qi.value = m[1]; }
+    S.view = view;
+    ['today', 'library', 'progress', 'prefs'].forEach(function (k) { $('#v-' + k).hidden = k !== view; });
+    Array.prototype.forEach.call(document.querySelectorAll('.tabs a'), function (a) { if (a.dataset.view === view) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    render();
+    if (m) setTimeout(function () { var el = document.querySelector('[data-k="o' + m[1] + '"]'); if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' }); }, 120);
+  }
+  window.addEventListener('hashchange', route);
+
+  /* ---------- actions ---------- */
+  function localEntry(id, e) { S.progress.p[id] = e; render(); }
+  document.addEventListener('click', function (ev) {
+    var t = ev.target.closest('[data-act]'); if (!t) return;
+    var act = t.dataset.act, key = t.dataset.key, id = +t.dataset.id;
+    switch (act) {
+      case 'sol': ui.sol[key] = !ui.sol[key]; if (ui.sol[key]) ui.hint[key] = false; break;
+      case 'hint': ui.hint[key] = !ui.hint[key]; break;
+      case 'toggle': ui.open[key] = !ui.open[key]; break;
+      case 'retag': ui.retag[key] = true; break;
+      case 'retag-pick': {
+        var e0 = entry(id) || { s: null, st: null, due: null, at: null, h: [], b: null, d: null }, p0 = S.byId[id];
+        var e1 = JSON.parse(JSON.stringify(e0)); e1.d = t.dataset.d === p0.d ? null : t.dataset.d;
+        ui.retag[key] = false; localEntry(id, e1); send('apiRetag', [id, t.dataset.d]); return;
+      }
+      case 'mark': case 'clear': {
+        var m = act === 'clear' ? null : t.dataset.m;
+        var prev = entry(id);
+        if (act === 'mark' && prev && prev.s === m && prev.h && prev.h.length && prev.h[prev.h.length - 1].slice(0, 10) === today()) return;
+        Object.keys(ui.open).forEach(function (k) { if (k.split(':')[1] == id) ui.open[k] = false; });
+        localEntry(id, P.mark(prev, m, today(), Date.now()));
+        send('apiMark', [id, m]);
+        return;
+      }
+      case 'next-set': {
+        if (S.loadingNext) return;
+        S.loadingNext = true; t.disabled = true; t.textContent = 'Picking your next set…';
+        ui.open = {};
+        send('apiNextSet').then(function () { S.loadingNext = false; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        return;
+      }
+      case 'lib-open': ui.lib.open = ui.lib.open === id ? null : id; break;
+      case 'lib-d': ui.lib.d = t.dataset.v; ui.lib.limit = 60; saveLib(); break;
+      case 'more': ui.lib.limit += 60; break;
+      case 'step': {
+        var cur = settings(), k = t.dataset.k, nv = cur[k] + (+t.dataset.d);
+        var lim = k === 'size' ? [1, 15] : [0, 5];
+        nv = Math.max(lim[0], Math.min(lim[1], nv));
+        if (nv === cur[k]) return;
+        var ns2 = { size: cur.size, reviews: cur.reviews, tz: cur.tz }; ns2[k] = nv;
+        S.settings = ns2; render(); send('apiSettings', [ns2]); return;
+      }
+      case 'reset': {
+        if (!ui.resetArmed) { ui.resetArmed = true; render(); setTimeout(function () { ui.resetArmed = false; render(); }, 5000); return; }
+        ui.resetArmed = false; ui.open = {}; ui.sol = {}; ui.hint = {};
+        t.disabled = true; t.textContent = 'Erasing…';
+        send('apiReset').then(function () { location.hash = '#today'; });
+        return;
+      }
+      default: return;
+    }
+    render();
+  });
+
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && S.started) refresh(); });
+
+  /* ---------- boot ---------- */
+  var BOOT = window.BOOT || {};
+  if (BOOT.q) location.hash = '#q' + BOOT.q;
+  else if (BOOT.view) location.hash = '#' + BOOT.view;
+  route();
+  if (!HAS_GS) {
+    $('#v-today').innerHTML = '<p class="empty">Open this page once from the link in your Quant Guide email. After that, a bookmark works too.</p>';
+  } else {
+    Promise.all([call('apiCatalog'), call('apiState')]).then(function (r) {
+      var c = JSON.parse(r[0]);
+      S.cat = c.problems; S.stdW = c.stdW || 1002;
+      S.cat.forEach(function (p) { S.byId[p.id] = p; });
+      S.started = true;
+      applyState(r[1]);
+      route();
+    }).catch(function (err) {
+      $('#v-today').innerHTML = '<p class="empty">The problem book did not load: ' + esc((err && err.message) || 'unknown error') + '. Reload the page to try again.</p>';
+    });
+  }
+})();
+</script>
